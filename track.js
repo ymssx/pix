@@ -50,23 +50,34 @@ function updateLog() {
   // 获取 Git 暂存区中的所有文件
   const stagedFiles = getStagedFiles();
 
+  let nameEntryMap = {};
+  log.forEach((entry) => {
+    const nameEntryItem = entry.list.reduce((pre, oldPath, index) => {
+      const fields = oldPath.split('/');
+      return { ...pre, [fields[fields.length - 1]]: { entry, index } };
+    }, {});
+    nameEntryMap = {
+      ...nameEntryMap,
+      ...nameEntryItem,
+    };
+  });
+
   // 过滤出图片文件（只处理 public/pics 下的图片）
-  const newPics = stagedFiles
+  const stagedPics = stagedFiles
     .filter((file) => file.startsWith('public/pics/')) // 只关注 public/pics 目录下的文件
     .filter((file) => /\.(jpg|jpeg|png|gif)$/i.test(file)) // 只关注图片文件
     .map((file) => getRelativePath(path.join(__dirname, file)));
-
-  // 更新 log.json
-  // 更新旧图片路径
-  log.forEach((entry) => {
-    entry.list = entry.list.map((oldPath) => {
-      if (!stagedFiles.includes(`public/${oldPath}`)) {
-        // 如果图片被移动了，尝试找到新的路径
-        const newPath = newPics.find((pic) => path.basename(pic) === path.basename(oldPath));
-        return newPath || oldPath; // 如果找到新路径，更新路径，否则保持旧路径
-      }
-      return oldPath;
-    });
+  
+  const newPics = [];
+  stagedPics.forEach(item => {
+    const fields = item.split('/');
+    const name = fields[fields.length - 1];
+    const { entry, index } = nameEntryMap[name] || {};
+    if (entry) {
+      entry.list[index] = item; // 更新旧图片的路径
+    } else {
+      newPics.push(item);
+    }
   });
 
   // 添加新的提交记录
