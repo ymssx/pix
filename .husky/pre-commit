@@ -1,0 +1,2 @@
+node track.js
+git add public/log.json
