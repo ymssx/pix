@@ -15,8 +15,8 @@ export default function Home() {
         </div>
         <div>
           {item.list?.map(pic => (
-            <a href={`/detail/${encodeURIComponent(pic)}`}>
-              <Image width={1000} height={180} className="inline-block" src={pic} key={pic} alt="" style={{ height: '180px', width: 'auto' }} />
+            <a key={pic} href={`/detail/${encodeURIComponent(pic)}`}>
+              <Image width={1000} height={180} className="inline-block" src={pic} alt="" style={{ height: '180px', width: 'auto' }} />
             </a>
           ))}
         </div>
