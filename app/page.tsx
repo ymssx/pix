@@ -8,8 +8,8 @@ export default function Home() {
       return new Date(b.date).getTime() - new Date(a.date).getTime();
     })
     .map(item => (
-      <div key={item.date}>
-        <div className="mt-10 mb-2">
+      <div className="mb-10" key={item.date}>
+        <div className="mb-2">
           {item.msg}
           <time className="text-sm ml-2 opacity-70">{item.date}</time>
         </div>
