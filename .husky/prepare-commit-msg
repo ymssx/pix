@@ -1,3 +1,3 @@
 #!/bin/bash
 node track.js
-git add public/log.json
+git add app/log.json

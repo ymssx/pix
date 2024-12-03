@@ -3,7 +3,7 @@ const path = require('path');
 const { execSync } = require('child_process');
 
 // 配置
-const LOG_FILE_PATH = path.join(__dirname, 'public', 'log.json');
+const LOG_FILE_PATH = path.join(__dirname, 'app', 'log.json');
 
 // 读取 log.json 文件
 function readLog() {
